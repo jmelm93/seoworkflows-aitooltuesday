@@ -6,7 +6,7 @@ Welcome to the SEO Workflows repository for AI Tool Tuesday! Every Tuesday, we'r
 
 This repository is organized by week, with each week's tool residing in its own directory. Inside each directory, you'll find:
 
-- **`week_{num}-{flow_name}.json`**: The LangFlow configuration file for the specific tool.
+- **`{week_num}-{flow_name}.json`**: The LangFlow configuration file for the specific tool.
 - **`README.md`**: A detailed guide specific to that tool, including required environment variables and usage instructions.
 
 ## Getting Started:
@@ -22,7 +22,7 @@ To use these tools, you'll need a LangFlow instance. Here are a couple of option
 
 Here's how you can quickly get up and running with our AI SEO tools:
 
-1.  **Download the Flow:** Navigate to the directory of the tool you want to test and download the `week_{num}-{flow_name}.json` file.
+1.  **Download the Flow:** Navigate to the directory of the tool you want to test and download the `{week_num}-{flow_name}.json` file.
 2.  **Log in to LangFlow:** Access your LangFlow instance. If you don't have one yet, see the "Setting Up LangFlow" section below.
 3.  **Upload the Flow:** In LangFlow, click the "Upload a flow" button.
     ![Upload a flow](./static/upload_a_flow.png)
