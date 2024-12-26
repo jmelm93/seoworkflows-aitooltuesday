@@ -20,7 +20,7 @@ graph LR
     A --> C(Linking Targets Analysis);
     B --> D(Data Combination);
     C --> D;
-    D --> E(Internal Link Targeting);
+    D --> E(Internal Link Targeting & Placement);
     E --> F[Chat Output];
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
@@ -45,9 +45,10 @@ graph LR
 
     - **Combine Text:** Combines the summaries of the linked URLs and the scraped content of the target URL into a single text chunk.
 
-5.  **Internal Link Targeting:** This step analyzes the combined text to determine the best internal link placements and anchor text. It includes:
+5.  **Internal Link Targeting & Placement:** This step analyzes the combined text to determine the best internal link placements and anchor text. It includes:
 
     - **Agent (Internal Link Targeting Agent):** Uses an LLM to analyze the combined text and determine the best internal link placements and anchor text.
+    - **Agent (Internal Link Placement Agent):** Uses an LLM to analyze content to provide updated text for link placement.
 
 6.  **Output Display:** The final step displays the results in a user-friendly format. It includes:
     - **Chat Output:** Displays the results in a user-friendly markdown table format.
