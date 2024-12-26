@@ -90,3 +90,13 @@ The tool will output a markdown table with the following columns:
 - **Target URL:** The URL of the page that is being linked to.
 - **Anchor Text:** The recommended text to use for the link. If no suitable anchor text is found, this column will be left blank.
 - **Link Placement Notes:** Specific instructions on where to place the link within the target URL's content. If no suitable link placement is found, this column will explain why.
+
+## Stay Updated
+
+Follow us to stay updated on the latest AI SEO tools released every Tuesday!
+
+- **Blog:** [https://www.seoworkflows.com/blog](https://www.seoworkflows.com/blog)
+- **YouTube:** [https://www.youtube.com/@seoworkflows](https://www.youtube.com/@seoworkflows)
+- **LinkedIn:** [https://www.linkedin.com/company/seo-workflows/](https://www.linkedin.com/company/seo-workflows/)
+
+Happy testing! 🚀
