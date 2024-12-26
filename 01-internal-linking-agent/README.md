@@ -12,17 +12,45 @@ This tool is designed to help with internal link placement strategy. It leverage
 
 ## How It Works
 
-This LangFlow flow consists of the following components:
+This LangFlow flow is structured with an initial split into two parallel flows that converge for final processing:
 
-1.  **Chat Input:** Takes user input, including a target URL and a list of URLs to link. This is where you'll paste the input format described below.
-2.  **Prompt (Target URL Scrape):** Formats a prompt to instruct the agent to scrape the content of the target URL.
-3.  **Prompt (Linking Targets Summarization):** Formats a prompt to instruct the agent to summarize the content of the URLs to link.
-4.  **Firecrawl Scrape API Tool:** Uses the Firecrawl API to scrape the content from the target URL and the URLs to link.
-5.  **Agent (Content Summarization Agent):** Uses an LLM to generate concise summaries of the content from the URLs to link.
-6.  **Agent (Main Content Scrape Agent):** Uses an LLM to scrape the content of the target URL and output it in markdown format.
-7.  **Combine Text:** Combines the summaries of the linked URLs and the scraped content of the target URL into a single text chunk.
-8.  **Agent (Internal Link Targeting Agent):** Uses an LLM to analyze the combined text and determine the best internal link placements and anchor text.
-9.  **Chat Output:** Displays the results in a user-friendly markdown table format.
+```mermaid
+graph LR
+    A[User Input] --> B(Target Page Content Scraping);
+    A --> C(Linking Targets Analysis);
+    B --> D(Data Combination);
+    C --> D;
+    D --> E(Internal Link Targeting);
+    E --> F[Chat Output];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#ccf,stroke:#333,stroke-width:2px
+```
+
+1.  **User Input:** The process begins with a user providing a target URL and a list of URLs to link via the **Chat Input** node.
+
+2.  **Flow 1: Target Page Content Scraping:** This flow focuses on extracting the main content from the target URL. It includes:
+
+    - **Prompt (Target URL Scrape):** Formats a prompt to instruct the agent to scrape the content of the target URL.
+    - **Firecrawl Scrape API Tool:** Uses the Firecrawl API to scrape the content from the target URL.
+    - **Agent (Main Content Scrape Agent):** Uses an LLM to scrape the content of the target URL and output it in markdown format.
+
+3.  **Flow 2: Linking Targets Analysis:** This flow focuses on analyzing the URLs to link and generating summaries. It includes:
+
+    - **Prompt (Linking Targets Summarization):** Formats a prompt to instruct the agent to summarize the content of the URLs to link.
+    - **Firecrawl Scrape API Tool:** Uses the Firecrawl API to scrape the content from the URLs to link.
+    - **Agent (Content Summarization Agent):** Uses an LLM to generate concise summaries of the content from the URLs to link.
+
+4.  **Data Combination:** This step combines the outputs from both flows into a single text chunk. It includes:
+
+    - **Combine Text:** Combines the summaries of the linked URLs and the scraped content of the target URL into a single text chunk.
+
+5.  **Internal Link Targeting:** This step analyzes the combined text to determine the best internal link placements and anchor text. It includes:
+
+    - **Agent (Internal Link Targeting Agent):** Uses an LLM to analyze the combined text and determine the best internal link placements and anchor text.
+
+6.  **Output Display:** The final step displays the results in a user-friendly format. It includes:
+    - **Chat Output:** Displays the results in a user-friendly markdown table format.
 
 ## Environment Variables
 

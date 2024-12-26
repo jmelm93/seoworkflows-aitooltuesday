@@ -10,28 +10,55 @@ This tool is designed to quickly generate SEO-optimized titles, meta description
 - Scrapes content from a target URL using Firecrawl API.
 - Extracts and organizes keywords using DataForSEO API.
 - Generates SEO-optimized title tags and meta descriptions.
-- Creates a compelling H1 heading for the article.
 
 ## How It Works
 
-This LangFlow flow consists of the following components:
+This LangFlow flow is structured into two parallel flows that converge for final processing:
 
-1.  **Chat Input:** Takes user input, including a target URL and a target topic.
-2.  **Agent (Get SERP Agent):** Uses an LLM to get the top 4 results for the target using the Google SERPER API.
-3.  **Google Serper API:** Uses the Google SERPER API to search for the given topic and retrieve the top 4 results.
-4.  **Prompt (Get SERP Prompt):** Formats a prompt to instruct the agent to use the Google SERPER API to get the top 4 results for the query.
-5.  **Prompt (Main Content Scraper Prompt):** Formats a prompt to instruct the agent to scrape the content of the target URL.
-6.  **Firecrawl Scrape API Tool:** Uses the Firecrawl API to scrape the content from the target URL.
-7.  **Agent (Main Content Scraper Agent):** Uses an LLM to scrape the content of the target URL and output it in markdown format.
-8.  **Custom Component (PageKeywordsExtractorTool):** Uses the DataForSEO API to extract keywords for the target URL.
-9.  **Prompt (Keyword Extraction Prompt):** Formats a prompt to extract and organize keywords from URLs into a markdown table.
-10. **Agent (Keyword Extraction Agent):** Uses an LLM to extract and organize keywords from URLs into a markdown table.
-11. **Combine Text:** Combines the outputs from the agents and prompts into a single text chunk.
-12. **OpenAI Model (for H1 Creation):** Uses an LLM to generate an SEO-optimized and compelling H1 heading for the article.
-13. **Prompt (System Prompt):** Formats a prompt to create an SEO-optimized and compelling title tag and meta description for the article.
-14. **OpenAI Model (for Title & Meta):** Uses an LLM to generate an SEO-optimized title tag and meta description for the article.
-15. **Custom Component (CleanMarkdown):** Uses the textwrap python module to clean the final markdown output.
-16. **Chat Output:** Displays the final content outline and H1 heading in a user-friendly format.
+```mermaid
+graph LR
+    A[User Input] --> B(Content Scraping);
+    A --> C(Initial SERP Retrieval);
+    B --> E(Data Combination);
+    C --> D(Keyword Extraction);
+    D --> E;
+    E --> F(Keyword Targeting & Meta Generation);
+    F --> G(Output Formatting);
+    G --> H[Chat Output];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#ccf,stroke:#333,stroke-width:2px
+```
+
+1.  **User Input:** The process begins with a user providing a target URL and a target topic via the **Chat Input** node.
+
+2.  **Flow 1: Content Scraping:** This flow focuses on extracting and summarizing content from the target URL. It includes:
+
+    - **Prompt (Main Content Scraper Prompt):** Formats a prompt to instruct the agent to scrape the content.
+    - **Firecrawl Scrape API Tool:** Uses the Firecrawl API to scrape the content from the target URL.
+    - **Agent (Main Content Scraper Agent):** Uses an LLM to scrape the content of the target URL and output it in markdown format.
+
+3.  **Flow 2: Initial SERP and Keyword Analysis:** This flow focuses on identifying relevant search results and keywords. It includes:
+
+    - **Agent (Get SERP Agent):** Uses an LLM to get the top 4 results for the target using the Google SERPER API.
+    - **Google Serper API:** Uses the Google SERPER API to search for the given topic and retrieve the top 4 results.
+    - **Prompt (Get SERP Prompt):** Formats a prompt to instruct the agent to use the Google SERPER API.
+    - **Custom Component (PageKeywordsExtractorTool):** Uses the DataForSEO API to extract keywords for the target URL.
+    - **Prompt (Keyword Extraction Prompt):** Formats a prompt to extract and organize keywords from URLs into a markdown table.
+    - **Agent (Keyword Extraction Agent):** Uses an LLM to extract and organize keywords from URLs into a markdown table.
+
+4.  **Data Combination:** This step combines the outputs from both flows into a single text chunk. It includes:
+
+    - **Combine Text:** Combines the outputs from the agents and prompts into a single text chunk.
+
+5.  **Keyword Targeting & Meta Generation:** This step focuses on creating SEO-optimized title tags and meta descriptions. It includes:
+
+    - **Prompt (System Prompt):** Formats a prompt to create an SEO-optimized and compelling title tag and meta description for the article.
+    - **OpenAI Model (for Title & Meta):** Uses an LLM to generate an SEO-optimized title tag and meta description for the article.
+
+6.  **Output Formatting:** This step cleans up the final output. It includes:
+    - **Custom Component (CleanMarkdown):** Uses the textwrap python module to clean the final markdown output.
+    - **Chat Output:** Displays the final content outline and H1 heading in a user-friendly format.
 
 ## Environment Variables
 
@@ -83,64 +110,6 @@ The tool will output a markdown table with the following columns:
 - **Reasoning:** The rationale behind the choices for the title tag and meta description.
 
 The output will also include a single H1 heading for the article.
-
-**Example Output:**
-
-```
-## Competitive Keyword Targets:
-
-| URL                     | Keywords                                                     |
-|-------------------------|--------------------------------------------------------------|
-| https://www.bankrate.com/investing/types-of-stock/     | types of stocks (1200 searches/mo), stock types (950 searches/mo), ...      |
-
-## Content Outline:
-
-**H2: Understanding Common Stock**
-    -   **H3: Voting Rights**
-        -   **Content Outline**: Discuss the voting rights associated with common stock.
-    -   **H3: Risk and Return**
-        -   **Content Outline:** Explain the risk and return profile of common stock.
-    -   **Media Ideas:** Infographic comparing common and preferred stock.
-
-**H2: Exploring Preferred Stock**
-    -   **H3: Dividend Priority**
-        -   **Content Outline:** Highlight the dividend priority of preferred stock.
-    -   **H3: Conversion Options**
-        -   **Content Outline:** Discuss the conversion options of preferred stock.
-    -   **Media Ideas:** Table summarizing the key differences between common and preferred stock.
-
-## Consolidated Links:
-
-| Link                                                                                     | Found on                                                                           |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| [https://www.example1.com/common-stock](https://www.example1.com/common-stock) | [https://www.example1.com/types-of-stock](https://www.example1.com/types-of-stock) |
-| [https://www.example2.com/preferred-stock](https://www.example2.com/preferred-stock) | [https://www.example2.com/investing-guide](https://www.example2.com/investing-guide) |
-
-## Recurring Topics:
-
-**Common Stock**
-
-   - Pages Mentioning Topic 1: [https://www.example1.com/types-of-stock](https://www.example1.com/types-of-stock), [https://www.example2.com/investing-guide](https://www.example2.com/investing-guide)
-   - Reason or Summary: The importance of understanding common stock is consistently emphasized.
-
-**Preferred Stock**
-
-   - Pages Mentioning Topic 2: [https://www.example1.com/types-of-stock](https://www.example1.com/types-of-stock), [https://www.example2.com/preferred-stock](https://www.example2.com/preferred-stock)
-   - Reason or Summary: The need to understand the benefits of preferred stock is a key concern for investors.
-
-## Insights for SEO Optimization:
-
-- **Keyword Focus**: Prioritize keywords related to "types of stocks," "common stock," and "preferred stock."
-- **Content Depth**: Provide detailed information on each topic, including specific recommendations and tips.
-
-## Competitive Keyword Targets:
-
-| Target Page | Keyword Targets | Title Tag | Description | Reasoning |
-|---|---|---|---|---|
-| https://www.bankrate.com/investing/types-of-stock/ | types of stocks (1200 searches/mo), stock types (950 searches/mo), ... | Types of Stocks [Common, Preferred & More] | Learn about the different types of stocks, including common and preferred, and how they can fit into your investment strategy. | Used "types of stocks" (high volume) naturally, the primary keyword. Brackets were used to enhance readability and CTR. |
-
-# Understanding the Different Types of Stocks
-```
 
 ## Usage Tips
 
